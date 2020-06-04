@@ -1,6 +1,9 @@
 pandas==1.0.3
 plotly==4.6.0
 scikit-learn==0.23.1
+matplotlib==3.2.1
+nbformat==5.0.6
+pandas-profiling==2.8.0
 
 #utils
 pre-commit==2.3.0
