@@ -13,7 +13,10 @@ the required packages:
 ```bash
 #cd to root directory
 python -m venv venv
-source venv/Scripts/activate (Windows)
+
+source venv/Scripts/activate (Windows) 
+source venv/bin/activate (Mac/Linux)
+
 pip install -r requirements.txt
 ```
 
