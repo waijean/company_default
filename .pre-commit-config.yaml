@@ -7,3 +7,9 @@ repos:
         stages: [commit]
         language: system
         types: [python]
+
+    - id: nbstripout
+      name: nbstripout
+      entry: nbstripout
+      language: system
+      files: ".ipynb"  
