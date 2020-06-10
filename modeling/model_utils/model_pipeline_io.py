@@ -13,12 +13,5 @@ def get_para() -> dict:
 
 def read_train_file() -> pd.DataFrame:
     paras = get_para()
-    df = pd.read_csv(paras["path_to_train_file"], index_col="company_id")
+    df = pd.read_csv(paras["path_to_clean_train_file"], index_col="company_id")
     return df
-
-
-def save_clean_train_file(df: pd.DataFrame):
-    paras = get_para()
-    file_path = paras["path_to_clean_train_file"]
-    print(f"save processed data set to: {file_path}")
-    df.to_csv(file_path)
