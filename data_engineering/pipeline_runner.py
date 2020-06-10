@@ -1,7 +1,6 @@
 import pandas as pd
 
-from cmpny_bc_cls.utils import pipeline_io
-from cmpny_bc_cls.utils import feature_imputation
+from utils import feature_imputation, pipeline_io
 
 COLS_IMPUTE_ZEROS = ["gross profit (in 3 years) / total assets"]
 

@@ -3,7 +3,7 @@ import pandas as pd
 from pandas.testing import assert_frame_equal
 import numpy as np
 
-from cmpny_bc_cls.utils import feature_imputation
+from utils import feature_imputation
 
 
 @pytest.fixture
