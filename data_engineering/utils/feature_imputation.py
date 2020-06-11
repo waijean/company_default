@@ -13,7 +13,7 @@ def fill_null_with_mean(df: pd.DataFrame, columns: list) -> pd.DataFrame:
     return df_new
 
 
-def fill_null_with_midean(df: pd.DataFrame, columns: list) -> pd.DataFrame:
+def fill_null_with_median(df: pd.DataFrame, columns: list) -> pd.DataFrame:
     df_new = df.copy()
     df_new[columns] = df_new[columns].fillna(df[columns].median())
     return df_new
