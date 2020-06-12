@@ -1,10 +1,14 @@
 import pandas as pd
 import yaml
 import os
+import git
+
+repo = git.Repo(".", search_parent_directories=True)
+ROOT_DIR_PATH = repo.working_tree_dir
 
 
 def get_para() -> dict:
-    file_path = os.path.join(os.path.abspath(""), "..", "conf/parameters.yaml")
+    file_path = os.path.join(ROOT_DIR_PATH, "conf/parameters.yaml")
     print(f"path to the config file: {file_path}")
     with open(file_path) as file:
         paras = yaml.load(file, Loader=yaml.FullLoader)
