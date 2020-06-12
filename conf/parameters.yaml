@@ -1,0 +1,12 @@
+path_to_train_file:
+  "/Users/shengdi/Documents/lbg_hackathon/train.csv"
+
+path_to_test_file:
+  "/Users/shengdi/Documents/lbg_hackathon/test.csv"
+
+path_to_clean_train_file:
+  "/Users/shengdi/Documents/lbg_hackathon/train_clean.csv"
+
+hyperparameter:
+  - n_estimator:
+      20

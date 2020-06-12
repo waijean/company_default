@@ -135,4 +135,5 @@ dmypy.json
 data/
 *.csv
 *.html
+*.xlsx
 *.docx
