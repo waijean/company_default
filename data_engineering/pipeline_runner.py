@@ -6,6 +6,7 @@ COLS_IMPUTE_ZEROS = ["gross profit (in 3 years) / total assets"]
 
 
 def transform(df: pd.DataFrame) -> pd.DataFrame:
+    COLS_IMPUTE_ZEROS = list(df.columns)
     df = feature_imputation.fill_null_with_zeros(df, COLS_IMPUTE_ZEROS)
     return df
 
