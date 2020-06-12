@@ -137,3 +137,6 @@ data/
 *.html
 *.xlsx
 *.docx
+
+#config
+conf/parameters.yaml
