@@ -43,7 +43,7 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def run(clean_ratio_df=True, get_raw_values=True):
+def run(clean_ratio=True, get_raw=True):
     """
     Run two different jobs
     1. Clean the original ratio df
@@ -52,12 +52,12 @@ def run(clean_ratio_df=True, get_raw_values=True):
     train_df = pipeline_io.read_train_file()
     print(train_df.head())
 
-    if clean_ratio_df:
+    if clean_ratio:
         transformed_df = transform(train_df)
 
         pipeline_io.save_clean_train_file(transformed_df)
 
-    if get_raw_values:
+    if get_raw:
         raw_values_df = get_raw_values(train_df)
 
         # the raw values df should have 32 features columns and 1 target column
@@ -67,4 +67,4 @@ def run(clean_ratio_df=True, get_raw_values=True):
 
 
 if __name__ == "__main__":
-    run()
+    run(clean_ratio=False)
