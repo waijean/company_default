@@ -31,13 +31,13 @@ def read_test_file() -> pd.DataFrame:
 
 def save_clean_train_file(df: pd.DataFrame):
     paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], "clean_train.csv")
+    file_path = os.path.join(paras["path_to_output_dir"], "cleaned_ratio_train.csv")
     print(f"save processed data set to: {file_path}")
     df.to_csv(file_path)
 
 
 def save_raw_values_file(df: pd.DataFrame):
     paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], "raw_values.csv")
+    file_path = os.path.join(paras["path_to_output_dir"], "cleaned_raw_train.csv")
     print(f"save processed data set to: {file_path}")
     df.to_csv(file_path)
