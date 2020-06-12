@@ -22,3 +22,11 @@ def save_clean_train_file(df: pd.DataFrame):
     file_path = paras["path_to_clean_train_file"]
     print(f"save processed data set to: {file_path}")
     df.to_csv(file_path)
+
+
+def save_raw_values_file(df: pd.DataFrame):
+    paras = get_para()
+    dir_path = paras["path_to_output_dir"]
+    file_path = os.path.join(dir_path, "raw_values.csv")
+    print(f"save processed data set to: {file_path}")
+    df.to_csv(file_path)

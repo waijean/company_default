@@ -23,6 +23,7 @@ def derive_features_from_gross_profit(df):
         **{"SALES1": calculate_sales1(df), "INTEREST": calculate_interest(df),}
     )
 
+
 def combine_sales(df):
     new_df = df.assign(**{"SALES": df["SALES1"].combine_first(df["SALES2"])})
     return new_df.drop(["SALES1", "SALES2"], axis=1)
@@ -99,5 +100,3 @@ def calculate_share_capital(df: pd.DataFrame) -> pd.Series:
         df["TOTAL_ASSETS"] * df["(equity - share capital) / total assets"]
         - df["EQUITY"]
     )
-
-
