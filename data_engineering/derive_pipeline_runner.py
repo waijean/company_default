@@ -11,6 +11,8 @@ def run():
 
     raw_values_df = get_raw_values(train_df)
 
+    assert raw_values_df.shape[1] == 32 + 1
+
     pipeline_io.save_raw_values_file(raw_values_df)
 
 

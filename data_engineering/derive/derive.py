@@ -26,6 +26,10 @@ def derive_short_term_securities_from_cash(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def rename_column(df):
+    return df.assign(**{"BANKRUPTCY_LABEL": df["bankruptcy_label"],})
+
+
 def calculate_number_of_null_values_per_row(df):
     return df.assign(**{"NULL_VALUE_COUNT": df.isna().sum(axis=1)})
 
@@ -43,8 +47,7 @@ def remove_duplicates(df):
 
 
 # todo:
-#  1. refactor this into di's data pipeline
-#  2. standardize naming for 'logarithm of total assets', 'bankruptcy_label' and 'working_capital2'
+#  1. standardize naming for 'logarithm of total assets', 'bankruptcy_label' and 'working_capital2'
 #  (i.e. from orignal feature).
 
 
@@ -66,6 +69,7 @@ def get_raw_values(ratio_df):
         .pipe(derive_third_layer)
         .pipe(derive_fourth_layer)
         .pipe(derive_short_term_securities_from_cash)
+        .pipe(rename_column)
     )
 
     return raw_values_df.drop(ratio_df.columns, axis=1)
