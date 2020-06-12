@@ -23,10 +23,9 @@ def derive_features_from_sales1(df):
 
 
 def combine_depreciation(df):
-    new_df = df.assign(
+    return df.assign(
         **{"DEPRECIATION": df["DEPRECIATION1"].combine_first(df["DEPRECIATION2"])}
-    )
-    return new_df.drop(["DEPRECIATION1", "DEPRECIATION2"], axis=1)
+    ).drop(["DEPRECIATION1", "DEPRECIATION2"], axis=1)
 
 
 def derive_extraordinary_items_from_financial_expenses(

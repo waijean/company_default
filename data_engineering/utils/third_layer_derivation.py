@@ -25,8 +25,9 @@ def derive_features_from_gross_profit(df):
 
 
 def combine_sales(df):
-    new_df = df.assign(**{"SALES": df["SALES1"].combine_first(df["SALES2"])})
-    return new_df.drop(["SALES1", "SALES2"], axis=1)
+    return df.assign(**{"SALES": df["SALES1"].combine_first(df["SALES2"])}).drop(
+        ["SALES1", "SALES2"], axis=1
+    )
 
 
 def derive_financial_expenses_from_profit_on_operating_expenses(

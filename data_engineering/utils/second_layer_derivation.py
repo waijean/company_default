@@ -30,14 +30,13 @@ def derive_features_from_total_assets(df):
 
 
 def combine_working_capital(df):
-    new_df = df.assign(
+    return df.assign(
         **{
             "WORKING_CAPITAL": df["WORKING_CAPITAL1"].combine_first(
                 df["working capital"]
             )
         }
-    )
-    return new_df.drop(["WORKING_CAPITAL1"], axis=1)
+    ).drop(["WORKING_CAPITAL1"], axis=1)
 
 
 def calculate_total_sales(df: pd.DataFrame) -> pd.Series:
