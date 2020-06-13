@@ -24,7 +24,7 @@ from model_utils.constants import (
     ARTIFACT_PATH,
     DEFAULT_CV,
 )
-from model_utils.modeling import evaluate_cv_pipeline, load_data
+from model_utils.modeling import evaluate_cv_pipeline, load_data, split_data
 from utils.constants import BANKRUPTCY_LABEL, BALANCE_SHEET, INCOME_STATEMENT
 
 
@@ -64,16 +64,17 @@ class CrossValidatePipeline:
             experiment_id=experiment_id, run_name=self.run_name
         ) as active_run:
             X, y = load_data(self.read_path, self.X_col, self.y_col)
+            X_train, X_test, y_train, y_test = split_data(X, y)
             set_tags(self.X_col, self.y_col, active_run)
             if self.params is None:
                 self.params = get_params(self.pipeline)
             log_params(self.params)
             log_pipeline(self.pipeline)
             fitted_classifier, cv_results = evaluate_cv_pipeline(
-                self.pipeline, X, y, self.scoring, self.cv
+                self.pipeline, X_train, y_train, self.scoring, self.cv
             )
             log_cv_metrics(cv_results)
-            log_explainability(fitted_classifier, X)
+            log_explainability(fitted_classifier, X_train)
 
 
 if __name__ == "__main__":
@@ -81,11 +82,11 @@ if __name__ == "__main__":
     pipeline = make_pipeline_with_sampler(
         SimpleImputer(strategy="constant", fill_value=0),
         RandomUnderSampler(random_state=42),
-        RandomForestClassifier(random_state=42),
+        BalancedRandomForestClassifier(random_state=42),
     )
 
     CrossValidatePipeline(
-        experiment_name="Cross Validation",
+        experiment_name="MVP",
         run_name="Random Forest",
         read_path="D:/dev/Project/company_default/data/output/raw_values.csv",
         X_col=INCOME_STATEMENT + BALANCE_SHEET,
