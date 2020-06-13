@@ -19,6 +19,7 @@ from model_utils.constants import (
     SCORES_CSV,
     FEATURE_IMPORTANCE_PLOT,
     FEATURE_IMPORTANCE_CSV,
+    RUN_ID,
 )
 
 logging.config.fileConfig(fname=LOG_CONFIG_PATH, disable_existing_loggers=False)
@@ -36,10 +37,11 @@ def setup_mlflow(tracking_uri: str, experiment_name: str, artifact_location: str
     return experiment_id
 
 
-def set_tags(X_col: List[str], y_col: str):
+def set_tags(X_col: List[str], y_col: str, active_run):
     logger.info("Setting tags")
     mlflow.set_tag(X_COL, X_col)
     mlflow.set_tag(Y_COL, y_col)
+    mlflow.set_tag(RUN_ID, active_run.info.run_id)
 
 
 def get_params(pipeline: Pipeline):

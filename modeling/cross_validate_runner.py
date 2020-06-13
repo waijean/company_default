@@ -64,7 +64,7 @@ class CrossValidatePipeline:
             experiment_id=experiment_id, run_name=self.run_name
         ) as active_run:
             X, y = load_data(self.read_path, self.X_col, self.y_col)
-            set_tags(self.X_col, self.y_col)
+            set_tags(self.X_col, self.y_col, active_run)
             if self.params is None:
                 self.params = get_params(self.pipeline)
             log_params(self.params)

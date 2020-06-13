@@ -17,6 +17,7 @@ TEST_RUN_NAME = "DecisionTree"
 # mlrun tags
 X_COL = "X_col"
 Y_COL = "y_col"
+RUN_ID = "run_id"
 iris_X_COL = [
     "sepal length (cm)",
     "sepal width (cm)",
