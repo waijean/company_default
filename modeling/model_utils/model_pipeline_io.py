@@ -11,7 +11,8 @@ def get_para() -> dict:
     return paras
 
 
-def read_train_file() -> pd.DataFrame:
+def read_train_file(filename: str) -> pd.DataFrame:
     paras = get_para()
-    df = pd.read_csv(paras["path_to_clean_train_file"], index_col="company_id")
+    filepath = os.path.join(paras["path_to_output_dir"], filename)
+    df = pd.read_csv(filepath, index_col="company_id")
     return df

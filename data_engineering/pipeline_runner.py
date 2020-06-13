@@ -52,20 +52,19 @@ def run(clean_ratio=True, get_raw=True):
     """
     pipeline_io.create_output_dir()
     train_df = pipeline_io.read_train_file()
-    print(train_df.head())
 
     if clean_ratio:
         transformed_df = transform(train_df)
-
         pipeline_io.save_clean_train_file(transformed_df)
 
     if get_raw:
         raw_values_df = get_raw_values(train_df)
+        transformed_df = transform(raw_values_df)
 
         # the raw values df should have 32 features columns and 1 target column
         assert raw_values_df.shape[1] == 32 + 1
 
-        pipeline_io.save_raw_values_file(raw_values_df)
+        pipeline_io.save_raw_values_file(transformed_df)
 
 
 if __name__ == "__main__":
