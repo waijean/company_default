@@ -2,14 +2,14 @@ import pandas as pd
 
 from utils import feature_imputation, pipeline_io
 
-from data_engineering.utils.other_derivation import (
+from utils.other_derivation import (
     derive_total_assets_from_log_total_assets,
     derive_short_term_securities_from_cash,
     rename_column,
 )
-from data_engineering.utils.fourth_layer_derivation import derive_fourth_layer
-from data_engineering.utils.second_layer_derivation import derive_second_layer
-from data_engineering.utils.third_layer_derivation import derive_third_layer
+from utils.fourth_layer_derivation import derive_fourth_layer
+from utils.second_layer_derivation import derive_second_layer
+from utils.third_layer_derivation import derive_third_layer
 
 COLS_IMPUTE_ZEROS = ["gross profit (in 3 years) / total assets"]
 
@@ -49,6 +49,7 @@ def run(clean_ratio=True, get_raw=True):
     1. Clean the original ratio df
     2. Get the raw values from original ratio df
     """
+    pipeline_io.create_output_dir()
     train_df = pipeline_io.read_train_file()
     print(train_df.head())
 

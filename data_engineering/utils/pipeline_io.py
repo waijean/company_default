@@ -41,3 +41,13 @@ def save_raw_values_file(df: pd.DataFrame):
     file_path = os.path.join(paras["path_to_output_dir"], "cleaned_raw_train.csv")
     print(f"save processed data set to: {file_path}")
     df.to_csv(file_path)
+
+
+def create_output_dir():
+    paras = get_para()
+    file_path = paras["path_to_output_dir"]
+    if not os.path.exists(file_path):
+        print(f"create output directory: {file_path}")
+        os.makedirs(file_path)
+    else:
+        print(f"skipped creating output directory")
