@@ -47,6 +47,13 @@ Add the following line in the first line of your notebook to run black formattin
 %load_ext nb_black
 ```
 
+### Data
+
+Set the input and output directories in conf/parameters.yaml. The input directory contains train.csv and test.csv, 
+while the output directory will have the pipeline output. 
+
+Each developer should have their own copy of conf/parameters.yaml so don't commit this file to Git.
+
 ## Deployment
 
 To deploy project on a live system

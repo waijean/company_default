@@ -132,6 +132,11 @@ dmypy.json
 .idea/
 
 #data
+data/
 *.csv
 *.html
 *.xlsx
+*.docx
+
+#config
+conf/parameters.yaml

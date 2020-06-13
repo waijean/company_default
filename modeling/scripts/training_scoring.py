@@ -32,7 +32,10 @@ def run():
         RandomForestClassifier(random_state=RANDOM_STATE),
     )
     pipe.fit(X_train, y_train)
-    pipe.score(X_test, y_test)
+    score = pipe.score(X_test, y_test)
+
+    print(f"model accuracy on test set: {score}")
+    print(classification_report_imbalanced(y_test, pipe.predict(X_test)))
 
 
 if __name__ == "__main__":
