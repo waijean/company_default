@@ -44,4 +44,4 @@ FN = "fn"
 
 
 # cross validate default
-DEFAULT_CV = StratifiedKFold(n_splits=5, random_state=0, shuffle=True)
+DEFAULT_CV = StratifiedKFold(n_splits=5, random_state=42, shuffle=True)

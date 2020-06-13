@@ -2,8 +2,9 @@ from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
 
 import mlflow
+from imblearn.ensemble import BalancedRandomForestClassifier, BalancedBaggingClassifier
 from imblearn.under_sampling import RandomUnderSampler
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline, make_pipeline
 from imblearn.pipeline import make_pipeline as make_pipeline_with_sampler
@@ -24,6 +25,7 @@ from model_utils.constants import (
     DEFAULT_CV,
 )
 from model_utils.modeling import evaluate_cv_pipeline, load_data
+from utils.constants import BANKRUPTCY_LABEL, BALANCE_SHEET, INCOME_STATEMENT
 
 
 @dataclass
@@ -71,7 +73,7 @@ class CrossValidatePipeline:
                 self.pipeline, X, y, self.scoring, self.cv
             )
             log_cv_metrics(cv_results)
-            log_explainability(fitted_classifier, self.X_col)
+            log_explainability(fitted_classifier, X)
 
 
 if __name__ == "__main__":
@@ -84,10 +86,10 @@ if __name__ == "__main__":
 
     CrossValidatePipeline(
         experiment_name="Cross Validation",
-        run_name="MVP",
+        run_name="Random Forest",
         read_path="D:/dev/Project/company_default/data/output/raw_values.csv",
-        X_col=["SHORT_TERM_LIABILITIES", "CASH"],
-        y_col="BANKRUPTCY_LABEL",
+        X_col=INCOME_STATEMENT + BALANCE_SHEET,
+        y_col=BANKRUPTCY_LABEL,
         scoring=BINARY_CLASSIFIER_SCORING,
         pipeline=pipeline,
     ).main()

@@ -48,7 +48,7 @@ def get_params(pipeline: Pipeline):
     params = {
         key: value
         for key, value in full_params.items()
-        if key not in ["memory", "verbose"]
+        if key not in ["memory", "verbose", "steps"]
     }
     return params
 
@@ -91,14 +91,14 @@ def log_df_artifact(df: Union[pd.DataFrame, pd.Series], filename: str):
     os.remove(filename)
 
 
-def log_explainability(fitted_classifier, X_col):
+def log_explainability(fitted_classifier, X):
     """
-    Disable logging plotly artifact to save memory 
+    Disable logging plotly artifact to save memory
     """
     logger.info("Logging explainability")
     if hasattr(fitted_classifier, "feature_importances_"):
         feature_importance = pd.Series(
-            data=fitted_classifier.feature_importances_, index=X_col,
+            data=fitted_classifier.feature_importances_, index=X.columns,
         ).sort_values()
         feature_importance_fig = px.bar(
             feature_importance,
