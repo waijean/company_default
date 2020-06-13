@@ -54,7 +54,7 @@ class CrossValidatePipeline:
     params: Optional[Dict[str, Any]] = None
     cv = DEFAULT_CV
     tracking_uri: str = TRACKING_URI_PATH
-    artifact_location: str = ARTIFACT_PATH
+    artifact_location: Optional[str] = None
 
     def main(self):
         experiment_id = setup_mlflow(
