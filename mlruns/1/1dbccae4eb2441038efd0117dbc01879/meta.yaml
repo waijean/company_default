@@ -1,0 +1,15 @@
+artifact_uri: file:D:\Dev\Project\company_default\mlruns/1/1dbccae4eb2441038efd0117dbc01879/artifacts
+end_time: 1592091261175
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: 1dbccae4eb2441038efd0117dbc01879
+run_uuid: 1dbccae4eb2441038efd0117dbc01879
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1592091257729
+status: 3
+tags: []
+user_id: kwj_9
