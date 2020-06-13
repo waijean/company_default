@@ -82,7 +82,7 @@ if __name__ == "__main__":
     pipeline = make_pipeline_with_sampler(
         SimpleImputer(strategy="constant", fill_value=0),
         RandomUnderSampler(random_state=42),
-        BalancedRandomForestClassifier(random_state=42),
+        RandomForestClassifier(random_state=42),
     )
 
     CrossValidatePipeline(
