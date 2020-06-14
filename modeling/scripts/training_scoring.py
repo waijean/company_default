@@ -15,15 +15,7 @@ RANDOM_STATE = 0
 
 
 def run(train_set_name: list):
-
-    train_data = pd.concat(
-        [
-            model_pipeline_io.read_train_file(name).iloc[:, :-1]
-            for name in train_set_name
-        ],
-        axis=1,
-    )
-    target = model_pipeline_io.read_train_file(train_set_name[0]).iloc[:, -1]
+    train_data, target = model_pipeline_io.get_training_set(train_set_name)
 
     X_train, X_test, y_train, y_test = train_test_split(
         train_data, target, test_size=0.2, random_state=0

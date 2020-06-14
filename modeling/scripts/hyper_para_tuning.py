@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -6,7 +5,7 @@ from sklearn.model_selection import train_test_split, RandomizedSearchCV
 
 from imblearn.under_sampling import RandomUnderSampler
 
-from model_utils import model_pipeline_io
+from model_utils.model_pipeline_io import get_training_set
 
 RANDOM_STATE = 0
 
@@ -49,18 +48,6 @@ def get_tuned_hyperpara(X: pd.DataFrame, y: pd.DataFrame):
     )
     rf_random.fit(X_res, y_res)
     return rf_random
-
-
-def get_training_set(train_set_name: list):
-    train_data = pd.concat(
-        [
-            model_pipeline_io.read_train_file(name).iloc[:, :-1]
-            for name in train_set_name
-        ],
-        axis=1,
-    )
-    target = model_pipeline_io.read_train_file(train_set_name[0]).iloc[:, -1]
-    return train_data, target
 
 
 def run(train_set_name: list):
