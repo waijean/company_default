@@ -11,6 +11,8 @@ from utils.fourth_layer_derivation import derive_fourth_layer
 from utils.second_layer_derivation import derive_second_layer
 from utils.third_layer_derivation import derive_third_layer
 
+TRAIN = "train"
+TEST = "test"
 COLS_IMPUTE_ZEROS = ["gross profit (in 3 years) / total assets"]
 
 
@@ -43,29 +45,32 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def run(clean_ratio=True, get_raw=True):
+def run():
     """
     Run two different jobs
     1. Clean the original ratio df
     2. Get the raw values from original ratio df
     """
+    output_files = {
+        "ratio_train": "ratio_train.csv",
+        "ratio_test": "ratio_test.csv",
+        "raw_train": "raw_train.csv",
+        "raw_test": "raw_test.csv",
+    }
+
     pipeline_io.create_output_dir()
-    train_df = pipeline_io.read_train_file()
-    print(train_df.head())
+    df = pipeline_io.read_file(TRAIN)
 
-    if clean_ratio:
-        transformed_df = transform(train_df)
+    transformed_df = transform(df)
 
-        pipeline_io.save_clean_train_file(transformed_df)
+    raw_values_df = get_raw_values(df)
 
-    if get_raw:
-        raw_values_df = get_raw_values(train_df)
+    pipeline_io.save_file(transformed_df, output_files[f"ratio_{TRAIN}"])
 
-        # the raw values df should have 32 features columns and 1 target column
-        assert raw_values_df.shape[1] == 32 + 1
-
-        pipeline_io.save_raw_values_file(raw_values_df)
+    # the raw values df should have 32 features columns and 1 target column
+    assert raw_values_df.shape[1] == 32 + 1
+    pipeline_io.save_file(raw_values_df, output_files[f"raw_{TRAIN}"])
 
 
 if __name__ == "__main__":
-    run(clean_ratio=False)
+    run()
