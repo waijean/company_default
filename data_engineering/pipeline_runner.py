@@ -38,10 +38,10 @@ def run():
     2. Get the raw values from original ratio df
     """
     output_files = {
-        "ratio_train": "ratio_train.csv",
-        "ratio_test": "ratio_test.csv",
-        "raw_train": "raw_train.csv",
-        "raw_test": "raw_test.csv",
+        "ratio_train": "ratio_train",
+        "ratio_test": "ratio_test",
+        "raw_train": "raw_train",
+        "raw_test": "raw_test",
     }
 
     pipeline_io.create_output_dir()
