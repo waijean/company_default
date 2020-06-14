@@ -3,7 +3,7 @@ import pandas as pd
 from pandas.testing import assert_frame_equal
 import numpy as np
 
-from utils import feature_imputation
+from utils import feature_engineering
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def test_fill_null_with_zeros(input_df):
         columns=["col1", "col2", "col3"],
     )
 
-    results = feature_imputation.fill_null_with_mean(input_df, ["col1", "col3"])
+    results = feature_engineering.fill_null_with_mean(input_df, ["col1", "col3"])
     assert_frame_equal(results, expected)
 
 
@@ -33,7 +33,7 @@ def test_fill_null_with_mean(input_df):
         columns=["col1", "col2", "col3"],
     )
 
-    results = feature_imputation.fill_null_with_mean(input_df, ["col1", "col3"])
+    results = feature_engineering.fill_null_with_mean(input_df, ["col1", "col3"])
     assert_frame_equal(results, expected)
 
 
@@ -43,5 +43,5 @@ def test_fill_null_with_midean(input_df):
         columns=["col1", "col2", "col3"],
     )
 
-    results = feature_imputation.fill_null_with_midean(input_df, ["col1", "col3"])
+    results = feature_engineering.fill_null_with_median(input_df, ["col1", "col3"])
     assert_frame_equal(results, expected)
