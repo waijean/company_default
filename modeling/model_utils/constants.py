@@ -18,13 +18,6 @@ TEST_RUN_NAME = "DecisionTree"
 X_COL = "X_col"
 Y_COL = "y_col"
 RUN_ID = "run_id"
-iris_X_COL = [
-    "sepal length (cm)",
-    "sepal width (cm)",
-    "petal length (cm)",
-    "petal width (cm)",
-]
-iris_y_COL = "target"
 
 # mlrun artifacts
 PIPELINE_HTML = "pipeline.html"
