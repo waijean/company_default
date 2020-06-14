@@ -36,9 +36,9 @@ def save_clean_train_file(df: pd.DataFrame):
     df.to_csv(file_path)
 
 
-def save_raw_values_file(df: pd.DataFrame):
+def save_raw_values_file(df: pd.DataFrame, file_name: str):
     paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], "cleaned_raw_train.csv")
+    file_path = os.path.join(paras["path_to_output_dir"], file_name)
     print(f"save processed data set to: {file_path}")
     df.to_csv(file_path)
 
