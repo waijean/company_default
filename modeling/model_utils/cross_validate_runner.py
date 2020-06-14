@@ -88,7 +88,7 @@ if __name__ == "__main__":
     CrossValidatePipeline(
         experiment_name="MVP",
         run_name="Random Forest",
-        read_path="D:/dev/Project/company_default/data/output/raw_values.csv",
+        read_path="/data/output/raw_values.csv",
         X_col=INCOME_STATEMENT + BALANCE_SHEET,
         y_col=BANKRUPTCY_LABEL,
         scoring=BINARY_CLASSIFIER_SCORING,
