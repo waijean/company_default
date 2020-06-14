@@ -25,7 +25,7 @@ def load_data(read_path: str, X_col: List[str], y_col: str):
 def split_data(X: pd.DataFrame, y: pd.DataFrame):
     logger.info(f"Splitting data into train and test set")
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.33, random_state=42
+        X, y, test_size=0.2, random_state=0
     )
     return X_train, X_test, y_train, y_test
 
