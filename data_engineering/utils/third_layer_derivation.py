@@ -19,9 +19,7 @@ def derive_total_costs_from_total_sales(df):
 
 
 def derive_features_from_gross_profit(df):
-    return df.assign(
-        **{"SALES1": calculate_sales1(df), "INTEREST": calculate_interest(df),}
-    )
+    return df.assign(**{"SALES1": calculate_sales1(df)})
 
 
 def combine_sales(df):
@@ -63,13 +61,6 @@ def derive_features_from_equity(df):
 
 def calculate_sales1(df: pd.DataFrame) -> pd.Series:
     return df["GROSS_PROFIT"] / df["gross profit / sales"]
-
-
-def calculate_interest(df: pd.DataFrame) -> pd.Series:
-    return (
-        df["TOTAL_ASSETS"] * df["(gross profit + interest) / total assets"]
-        - df["GROSS_PROFIT"]
-    )
 
 
 def calculate_book_value_of_equity(df: pd.DataFrame) -> pd.Series:

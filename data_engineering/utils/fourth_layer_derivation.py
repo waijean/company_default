@@ -18,6 +18,7 @@ def derive_features_from_sales1(df):
             "DEPRECIATION2": calculate_depreciation2(df),
             "CASH": calculate_cash(df),
             "PREVIOUS_YEAR_SALES": calculate_previous_year_sales(df),
+            "INTEREST": calculate_interest(df),
         }
     )
 
@@ -69,3 +70,7 @@ def calculate_cash(df: pd.DataFrame) -> pd.Series:
 
 def calculate_previous_year_sales(df: pd.DataFrame) -> pd.Series:
     return df["SALES"] / df["sales (n) / sales (n-1)"]
+
+
+def calculate_interest(df: pd.DataFrame) -> pd.Series:
+    return df["SALES"] * df["(gross profit + interest) / sales"] - df["GROSS_PROFIT"]
