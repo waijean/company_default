@@ -31,7 +31,12 @@ def split_data(X: pd.DataFrame, y: pd.DataFrame):
 
 
 def evaluate_cv_pipeline(
-    pipeline: Pipeline, X_train: pd.DataFrame, y_train: pd.DataFrame, scoring: Dict, cv
+    pipeline: Pipeline,
+    X_train: pd.DataFrame,
+    y_train: pd.DataFrame,
+    scoring: Dict,
+    cv,
+    is_column_trans: bool,
 ):
     logger.info("Evaluating pipeline")
     cv_results = cross_validate(
@@ -46,10 +51,15 @@ def evaluate_cv_pipeline(
     )
     # extract first pipeline from cv_results
     fitted_pipeline = cv_results["estimator"][0]
+    # extract the first step from pipeline
+    if is_column_trans:
+        column_trans = fitted_pipeline[0]
+    else:
+        column_trans = None
     # extract the last step from pipeline
     fitted_classifier = fitted_pipeline[-1]
 
-    return fitted_classifier, cv_results
+    return column_trans, fitted_classifier, cv_results
 
 
 def evaluate_grid_search_pipeline(

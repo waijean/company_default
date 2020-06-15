@@ -93,15 +93,21 @@ def log_df_artifact(df: Union[pd.DataFrame, pd.Series], filename: str):
     os.remove(filename)
 
 
-def log_explainability(fitted_classifier, X_train):
+def log_explainability(fitted_classifier, X_train, columns_trans):
     """
     Disable logging plotly artifact to save memory
     """
     logger.info("Logging explainability")
     if hasattr(fitted_classifier, "feature_importances_"):
-        feature_importance = pd.Series(
-            data=fitted_classifier.feature_importances_, index=X_train.columns,
-        ).sort_values()
+        if columns_trans is None:
+            feature_importance = pd.Series(
+                data=fitted_classifier.feature_importances_, index=X_train.columns,
+            ).sort_values()
+        else:
+            feature_importance = pd.Series(
+                data=fitted_classifier.feature_importances_,
+                index=columns_trans.get_feature_names(),
+            ).sort_values()
         log_df_artifact(
             feature_importance.sort_values(ascending=False), FEATURE_IMPORTANCE_CSV
         )

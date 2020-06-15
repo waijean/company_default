@@ -4,10 +4,12 @@ from typing import Dict, List, Any, Optional
 import mlflow
 from imblearn.ensemble import BalancedRandomForestClassifier, BalancedBaggingClassifier
 from imblearn.under_sampling import RandomUnderSampler
+from sklearn.compose import make_column_transformer, ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline, make_pipeline
 from imblearn.pipeline import make_pipeline as make_pipeline_with_sampler
+from sklearn.preprocessing import OneHotEncoder
 
 from model_utils.mlrun import (
     set_tags,
@@ -51,6 +53,7 @@ class CrossValidatePipeline:
     y_col: str
     pipeline: Pipeline
     scoring: Dict
+    is_column_trans: bool = False
     params: Optional[Dict[str, Any]] = None
     cv = DEFAULT_CV
     tracking_uri: str = TRACKING_URI_PATH
@@ -70,27 +73,39 @@ class CrossValidatePipeline:
                 self.params = get_params(self.pipeline)
             log_params(self.params)
             log_pipeline(self.pipeline)
-            fitted_classifier, cv_results = evaluate_cv_pipeline(
-                self.pipeline, X_train, y_train, self.scoring, self.cv
+            column_trans, fitted_classifier, cv_results = evaluate_cv_pipeline(
+                self.pipeline,
+                X_train,
+                y_train,
+                self.scoring,
+                self.cv,
+                self.is_column_trans,
             )
             log_cv_metrics(cv_results)
-            log_explainability(fitted_classifier, X_train)
+            log_explainability(fitted_classifier, X_train, column_trans)
 
 
 if __name__ == "__main__":
     # create pipeline
+    column_trans = ColumnTransformer(
+        [("CLUSTER_LABEL", OneHotEncoder(), ["CLUSTER_LABEL"]),],
+        remainder="passthrough",
+    )
+
     pipeline = make_pipeline_with_sampler(
+        column_trans,
         SimpleImputer(strategy="constant", fill_value=0),
         RandomUnderSampler(random_state=42),
-        RandomForestClassifier(random_state=42),
+        BalancedRandomForestClassifier(random_state=42),
     )
 
     CrossValidatePipeline(
         experiment_name="MVP",
-        run_name="Random Forest",
-        read_path="/data/output/raw_values.csv",
-        X_col=INCOME_STATEMENT + BALANCE_SHEET,
+        run_name="Balanced Random Forest",
+        read_path="D:/dev/Project/company_default/data/output/cleaned_raw_cluster_train.csv",
+        X_col=INCOME_STATEMENT + BALANCE_SHEET + ["CLUSTER_LABEL"],
         y_col=BANKRUPTCY_LABEL,
-        scoring=BINARY_CLASSIFIER_SCORING,
         pipeline=pipeline,
+        scoring=BINARY_CLASSIFIER_SCORING,
+        is_column_trans=True,
     ).main()
