@@ -142,4 +142,4 @@ data/
 conf/parameters.yaml
 
 #mlruns
-mlruns/.trash
+mlruns/
