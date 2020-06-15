@@ -12,6 +12,8 @@ from imblearn.under_sampling import RandomUnderSampler
 from model_utils import model_pipeline_io
 
 RANDOM_STATE = 42
+TRAIN_RATIO_SET = "cleaned_ratio_train.csv"
+TRAIN_RAW_SET = "cleaned_raw_train.csv"
 
 
 def run(train_set_name: list):
@@ -44,14 +46,14 @@ def run(train_set_name: list):
 
 
 if __name__ == "__main__":
-    train_set_name = ["cleaned_raw_train.csv"]
+    train_set_name = [TRAIN_RAW_SET]
     print(f"try raw dataset...")
     run(train_set_name)
 
-    train_set_name = ["cleaned_ratio_train.csv"]
+    train_set_name = [TRAIN_RATIO_SET]
     print(f"try ratio dataset...")
     run(train_set_name)
 
-    train_set_name = ["cleaned_raw_train.csv", "cleaned_ratio_train.csv"]
+    train_set_name = [TRAIN_RAW_SET, TRAIN_RATIO_SET]
     print(f"try combine dataset...")
     run(train_set_name)
