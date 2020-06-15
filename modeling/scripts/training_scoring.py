@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from imblearn.pipeline import make_pipeline
 from imblearn.metrics import classification_report_imbalanced
 from imblearn.under_sampling import RandomUnderSampler
+from imblearn.over_sampling import SMOTE
+from imblearn.ensemble import BalancedRandomForestClassifier
 
 from model_utils import model_pipeline_io
 
@@ -25,8 +27,8 @@ def run(train_set_name: list):
 
     pipe = make_pipeline(
         StandardScaler(),
-        RandomUnderSampler(random_state=RANDOM_STATE),
-        RandomForestClassifier(random_state=RANDOM_STATE),
+        SMOTE(random_state=RANDOM_STATE),
+        BalancedRandomForestClassifier(random_state=RANDOM_STATE),
     )
 
     scores = cross_val_score(pipe, X_train, y_train, cv=5)
