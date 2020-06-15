@@ -54,6 +54,18 @@ while the output directory will have the pipeline output.
 
 Each developer should have their own copy of conf/parameters.yaml so don't commit this file to Git.
 
+### mlruns
+
+To track data science experiments, construct your sklearn pipeline in modeling/cross_validate_runner.py and run it.
+This will log the params, metrics, tags, and artifacts into a specific run folder within mlruns directory. You can then
+view the results using mlflow UI.
+
+To launch the mlflow UI, run the following command and view it at http://localhost:5000
+```bash
+#cd to root directory
+mlflow ui
+```
+
 ## Deployment
 
 To deploy project on a live system
