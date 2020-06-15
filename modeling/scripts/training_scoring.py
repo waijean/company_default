@@ -11,7 +11,7 @@ from imblearn.under_sampling import RandomUnderSampler
 
 from model_utils import model_pipeline_io
 
-RANDOM_STATE = 0
+RANDOM_STATE = 42
 
 
 def run(train_set_name: list):

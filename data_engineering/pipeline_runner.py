@@ -40,9 +40,9 @@ def get_raw_values(ratio_df):
 
 
 def transform(df: pd.DataFrame) -> pd.DataFrame:
-    COLS_SKEWED = list(df.columns)
+    COLS_SKEWED = list(df.columns[:-1])
     df = preprocessing.fix_skewed_data(df, COLS_SKEWED)
-    COLS_IMPUTE_ZEROS = list(df.columns)
+    COLS_IMPUTE_ZEROS = list(df.columns[:-1])
     df = feature_imputation.fill_null_with_zeros(df, COLS_IMPUTE_ZEROS)
     return df
 
