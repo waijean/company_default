@@ -37,7 +37,8 @@ def remove_companies_with_many_null_values(
 
 def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     # todo: need to try different combination of cols to find other possible duplicates
-    return df.drop_duplicates()
+    cols = list(df.columns)
+    return df.drop_duplicates(cols)
 
 
 def get_raw_values(ratio_df):
