@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import recall_score, precision_score
 
 from imblearn.pipeline import make_pipeline
 from imblearn.metrics import classification_report_imbalanced
@@ -27,7 +28,7 @@ def run(train_set_name: list):
 
     pipe = make_pipeline(
         StandardScaler(),
-        SMOTE(random_state=RANDOM_STATE),
+        RandomUnderSampler(random_state=RANDOM_STATE),
         BalancedRandomForestClassifier(random_state=RANDOM_STATE),
     )
 
@@ -38,13 +39,18 @@ def run(train_set_name: list):
     print("performance on test set...")
     pipe.fit(X_train, y_train)
     test_score = pipe.score(X_test, y_test)
+    precision = precision_score(y_test, pipe.predict(X_test))
+    recall = recall_score(y_test, pipe.predict(X_test))
     print(f"model accuracy on test set: {test_score}")
     print(classification_report_imbalanced(y_test, pipe.predict(X_test)))
+
+    print(f"model recall on test set: {recall}")
+    print(f"model precision on test set: {precision}")
 
     feature_importance = pd.Series(
         data=pipe[-1].feature_importances_, index=train_data.columns,
     ).sort_values(ascending=False)
-    print(f"top 10 important features: \n{feature_importance[:10]}")
+    print(f"top 10 important features: \n{feature_importance[:50]}")
 
 
 if __name__ == "__main__":

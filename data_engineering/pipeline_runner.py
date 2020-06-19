@@ -39,10 +39,17 @@ def get_raw_values(ratio_df):
     return raw_values_df.drop(ratio_df.columns, axis=1)
 
 
-def transform(df: pd.DataFrame) -> pd.DataFrame:
-    COLS_SKEWED = list(df.columns[:-1])
-    df = preprocessing.fix_skewed_data(df, COLS_SKEWED)
-    COLS_IMPUTE_ZEROS = list(df.columns[:-1])
+def transform(df: pd.DataFrame, test: bool = False, raw: bool = False) -> pd.DataFrame:
+    if raw:
+        if test:
+            COLS_SKEWED = list(df.columns)
+        else:
+            COLS_SKEWED = list(df.columns[:-1])
+        df = preprocessing.fix_skewed_data(df, COLS_SKEWED)
+    if test:
+        COLS_IMPUTE_ZEROS = list(df.columns)
+    else:
+        COLS_IMPUTE_ZEROS = list(df.columns[:-1])
     df = feature_imputation.fill_null_with_zeros(df, COLS_IMPUTE_ZEROS)
     return df
 
@@ -59,7 +66,7 @@ def run(clean_ratio=True, get_raw=True):
 
     if clean_ratio:
         transformed_df = transform(train_df)
-        transformed_df_test = transform(test_df)
+        transformed_df_test = transform(test_df, True)
 
         pipeline_io.save_raw_values_file(transformed_df, "cleaned_ratio_train.csv")
         pipeline_io.save_raw_values_file(transformed_df_test, "cleaned_ratio_test.csv")
@@ -69,7 +76,7 @@ def run(clean_ratio=True, get_raw=True):
         transformed_df = transform(raw_values_df)
 
         raw_values_df_test = get_raw_values(test_df)
-        transformed_df_test = transform(raw_values_df_test)
+        transformed_df_test = transform(raw_values_df_test, True)
 
         # the raw values df should have 32 features columns and 1 target column
         assert raw_values_df.shape[1] == 32 + 1
@@ -80,4 +87,4 @@ def run(clean_ratio=True, get_raw=True):
 
 
 if __name__ == "__main__":
-    run(clean_ratio=False)
+    run(clean_ratio=True)

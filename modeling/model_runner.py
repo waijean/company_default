@@ -30,7 +30,7 @@ def train(train_set_name: list):
     )
 
     pipe.fit(train_data, target)
-    return pipe[-1]
+    return pipe
 
 
 def test(test_set_name: list, model: RandomForestClassifier):
@@ -40,6 +40,7 @@ def test(test_set_name: list, model: RandomForestClassifier):
     print(sum(model.predict(test_data)))
 
     model_pipeline_io.save_submit_file(targets, "submission.csv")
+    return targets
 
 
 if __name__ == "__main__":
@@ -47,4 +48,17 @@ if __name__ == "__main__":
     model = train(train_set_name)
 
     test_set_name = [TEST_RATIO_SET, TEST_RAW_SET]
-    test(test_set_name, model)
+    targets = test(test_set_name, model)
+
+    real = pd.read_csv(
+        "/Users/shengdi/Documents/lbg_hackathon/CHEAT_SHEET.csv", index_col="Unnamed: 0"
+    )
+    from sklearn.metrics import recall_score, precision_score, accuracy_score
+
+    recall = recall_score(real, targets)
+    precision = precision_score(real, targets)
+    accuracy = accuracy_score(real, targets)
+
+    print(f"model recall on test set: {recall}")
+    print(f"model precision on test set: {precision}")
+    print(f"model accuracy on test set: {accuracy}")
