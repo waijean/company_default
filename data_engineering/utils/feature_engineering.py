@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 from utils.fourth_layer_derivation import derive_fourth_layer
 from utils.other_derivation import (
@@ -63,3 +64,13 @@ def get_raw_values(ratio_df):
     )
 
     return raw_values_df.drop(ratio_df.columns, axis=1)
+
+
+def clip_extreme_value(df: pd.DataFrame, columns: list):
+    for col in columns:
+        mask = ~np.isinf(df[col])
+        mask_inf = df[col] == np.inf
+        mask_inf_neg = df[col] == -np.inf
+        df.loc[mask_inf, col] = df.loc[mask, col].max()
+        df.loc[mask_inf_neg, col] = df.loc[mask, col].min()
+    return df

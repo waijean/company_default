@@ -24,7 +24,7 @@ TEST_COM_SET = "combined_test.csv"
 
 def train(train_set_name: list):
     train_data, target = model_pipeline_io.get_training_set(train_set_name)
-
+    print(train_data.index[np.isinf(train_data).any(1)])
     pipe = make_pipeline(
         StandardScaler(),
         RandomUnderSampler(random_state=RANDOM_STATE),
