@@ -14,10 +14,12 @@ from imblearn.ensemble import BalancedRandomForestClassifier
 from model_utils import model_pipeline_io, hyperparameter_const
 
 RANDOM_STATE = 42
-TRAIN_RATIO_SET = "cleaned_ratio_train.csv"
-TRAIN_RAW_SET = "cleaned_raw_train.csv"
-TEST_RATIO_SET = "cleaned_ratio_test.csv"
-TEST_RAW_SET = "cleaned_raw_test.csv"
+TRAIN_RATIO_SET = "ratio_train.csv"  # "cleaned_ratio_train.csv"
+TRAIN_RAW_SET = "raw_train.csv"  # "cleaned_raw_train.csv"
+TEST_RATIO_SET = "ratio_test.csv"  # "cleaned_ratio_test.csv"
+TEST_RAW_SET = "raw_test.csv"  # "cleaned_raw_test.csv"
+TRAIN_COM_SET = "combined_train.csv"
+TEST_COM_SET = "combined_test.csv"
 
 
 def train(train_set_name: list):
@@ -44,10 +46,10 @@ def test(test_set_name: list, model: RandomForestClassifier):
 
 
 if __name__ == "__main__":
-    train_set_name = [TRAIN_RATIO_SET, TRAIN_RAW_SET]
+    train_set_name = [TRAIN_COM_SET]
     model = train(train_set_name)
 
-    test_set_name = [TEST_RATIO_SET, TEST_RAW_SET]
+    test_set_name = [TEST_COM_SET]
     targets = test(test_set_name, model)
 
     real = pd.read_csv(

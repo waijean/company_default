@@ -24,22 +24,8 @@ def read_file(filename: str) -> pd.DataFrame:
 
 def save_file(df: pd.DataFrame, filename: str):
     paras = get_para()
-    file_path = os.path.join(paras["path_to_input_dir"], "test.csv")
-    df = pd.read_csv(file_path, index_col="company_id")
-    return df
-
-
-def save_clean_train_file(df: pd.DataFrame):
-    paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], "cleaned_ratio_train.csv")
-    print(f"save processed data set to: {file_path}")
-    df.to_csv(file_path)
-
-
-def save_raw_values_file(df: pd.DataFrame):
-    paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], "cleaned_raw_train.csv")
-    print(f"save processed data set to: {file_path}")
+    file_path = os.path.join(paras["path_to_output_dir"], f"{filename}.csv")
+    print(f"save {filename} to: {file_path}")
     df.to_csv(file_path)
 
 

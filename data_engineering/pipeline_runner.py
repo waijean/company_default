@@ -1,90 +1,67 @@
 import pandas as pd
 
-from utils import feature_imputation, pipeline_io, preprocessing
-
-from utils.other_derivation import (
-    derive_total_assets_from_log_total_assets,
-    derive_short_term_securities_from_cash,
-    rename_column,
+from utils import pipeline_io
+from utils.feature_engineering import (
+    remove_companies_with_many_null_values,
+    remove_duplicates,
+    get_raw_values,
+    fill_null_with_zeros,
 )
-from utils.fourth_layer_derivation import derive_fourth_layer
-from utils.second_layer_derivation import derive_second_layer
-from utils.third_layer_derivation import derive_third_layer
 
+TRAIN = "train"
+TEST = "test"
 COLS_IMPUTE_ZEROS = ["gross profit (in 3 years) / total assets"]
-COLS_SKEWED = ["TOTAL_ASSETS"]
 
 
-def get_raw_values(ratio_df):
-    """
-    - First and fifth layers are only deriving one column
-    - Exclude rotation receivables + inventory turnover in days since they are derived from receivable days and
-    inventory days which we can calculate from raw values
-
-    Args:
-        ratio_df:
-
-    Returns: Dataframe with 32 columns of raw values
-
-    """
-    raw_values_df = (
-        ratio_df.pipe(derive_total_assets_from_log_total_assets)
-        .pipe(derive_second_layer)
-        .pipe(derive_third_layer)
-        .pipe(derive_fourth_layer)
-        .pipe(derive_short_term_securities_from_cash)
-        .pipe(rename_column)
+def transform_train(df: pd.DataFrame) -> pd.DataFrame:
+    # todo: to be expanded
+    COLS_IMPUTE_ZEROS = list(df.columns)
+    return (
+        df.pipe(remove_duplicates)
+        .pipe(remove_companies_with_many_null_values, thres=55)
+        .pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS)
     )
 
-    return raw_values_df.drop(ratio_df.columns, axis=1)
+
+def transform_test(df: pd.DataFrame) -> pd.DataFrame:
+    COLS_IMPUTE_ZEROS = list(df.columns)
+    # todo: to be expanded
+    return df.pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS)
 
 
-def transform(df: pd.DataFrame, test: bool = False, raw: bool = False) -> pd.DataFrame:
-    if raw:
-        if test:
-            COLS_SKEWED = list(df.columns)
-        else:
-            COLS_SKEWED = list(df.columns[:-1])
-        df = preprocessing.fix_skewed_data(df, COLS_SKEWED)
-    if test:
-        COLS_IMPUTE_ZEROS = list(df.columns)
-    else:
-        COLS_IMPUTE_ZEROS = list(df.columns[:-1])
-    df = feature_imputation.fill_null_with_zeros(df, COLS_IMPUTE_ZEROS)
-    return df
+def create_combined_df(ratio_df: pd.DataFrame, raw_df: pd.DataFrame) -> pd.DataFrame:
+    return pd.concat(
+        [raw_df.iloc[:, :-1], ratio_df.iloc[:, :-1], raw_df.iloc[:, -1]], axis=1
+    )
 
 
-def run(clean_ratio=True, get_raw=True):
+def run(file: str):
     """
-    Run two different jobs
+    Data engineering pipeline consisting of following steps:
     1. Clean the original ratio df
-    2. Get the raw values from original ratio df
+    2. Get the raw values from ratio df
+    3. Concat both ratio and raw df
+    :param file: str value, it's either train or test
+    :return: processed ratio file, raw file and combined file
     """
+
     pipeline_io.create_output_dir()
-    train_df = pipeline_io.read_train_file()
-    test_df = pipeline_io.read_test_file()
+    df = pipeline_io.read_file(file)
+    if file == "test":
+        transformed_ratio_df = transform_test(df)
+    else:
+        transformed_ratio_df = transform_train(df)
+    transformed_raw_df = transformed_ratio_df.pipe(get_raw_values)
+    pipeline_io.save_file(transformed_ratio_df, f"ratio_{file}")
 
-    if clean_ratio:
-        transformed_df = transform(train_df)
-        transformed_df_test = transform(test_df, True)
+    # the raw values df should have 32 features columns and 1 target column
+    assert transformed_raw_df.shape[1] == 32 + 1
+    pipeline_io.save_file(transformed_raw_df, f"raw_{file}")
 
-        pipeline_io.save_raw_values_file(transformed_df, "cleaned_ratio_train.csv")
-        pipeline_io.save_raw_values_file(transformed_df_test, "cleaned_ratio_test.csv")
-
-    if get_raw:
-        raw_values_df = get_raw_values(train_df)
-        transformed_df = transform(raw_values_df)
-
-        raw_values_df_test = get_raw_values(test_df)
-        transformed_df_test = transform(raw_values_df_test, True)
-
-        # the raw values df should have 32 features columns and 1 target column
-        assert raw_values_df.shape[1] == 32 + 1
-        assert raw_values_df_test.shape[1] == 32 + 1
-
-        pipeline_io.save_raw_values_file(transformed_df, "cleaned_raw_train.csv")
-        pipeline_io.save_raw_values_file(transformed_df_test, "cleaned_raw_test.csv")
+    combined_df = create_combined_df(transformed_ratio_df, transformed_raw_df)
+    combined_df = transform_train(combined_df)
+    pipeline_io.save_file(combined_df, f"combined_{file}")
 
 
 if __name__ == "__main__":
-    run(clean_ratio=True)
+    run("train")
