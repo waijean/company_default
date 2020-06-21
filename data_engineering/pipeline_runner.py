@@ -6,25 +6,34 @@ from utils.feature_engineering import (
     remove_duplicates,
     get_raw_values,
     fill_null_with_zeros,
+    clip_extreme_value,
 )
 
 TRAIN = "train"
 TEST = "test"
 COLS_IMPUTE_ZEROS = ["gross profit (in 3 years) / total assets"]
+COLS_TO_CLIP = ["FIXED_ASSETS"]
 
 
 def transform_train(df: pd.DataFrame) -> pd.DataFrame:
     # todo: to be expanded
+    COLS_IMPUTE_ZEROS = list(df.columns)
+    COLS_TO_CLIP = list(df.columns)
     return (
         df.pipe(remove_duplicates)
         .pipe(remove_companies_with_many_null_values, thres=55)
         .pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS)
+        .pipe(clip_extreme_value, columns=COLS_TO_CLIP)
     )
 
 
 def transform_test(df: pd.DataFrame) -> pd.DataFrame:
+    COLS_IMPUTE_ZEROS = list(df.columns)
+    COLS_TO_CLIP = list(df.columns)
     # todo: to be expanded
-    return df.pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS)
+    return df.pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS).pipe(
+        clip_extreme_value, columns=COLS_TO_CLIP
+    )
 
 
 def create_combined_df(ratio_df: pd.DataFrame, raw_df: pd.DataFrame) -> pd.DataFrame:
@@ -50,6 +59,7 @@ def run(file: str):
     else:
         transformed_ratio_df = transform_train(df)
     transformed_raw_df = transformed_ratio_df.pipe(get_raw_values)
+
     pipeline_io.save_file(transformed_ratio_df, f"ratio_{file}")
 
     # the raw values df should have 32 features columns and 1 target column
@@ -57,8 +67,10 @@ def run(file: str):
     pipeline_io.save_file(transformed_raw_df, f"raw_{file}")
 
     combined_df = create_combined_df(transformed_ratio_df, transformed_raw_df)
+    combined_df = transform_test(combined_df)
     pipeline_io.save_file(combined_df, f"combined_{file}")
 
 
 if __name__ == "__main__":
     run("train")
+    run("test")
