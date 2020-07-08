@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, QuantileTransformer
 from sklearn.model_selection import train_test_split, cross_val_score
 
 from imblearn.pipeline import make_pipeline
@@ -12,23 +12,26 @@ from imblearn.over_sampling import SMOTE
 from imblearn.ensemble import BalancedRandomForestClassifier
 
 from model_utils import model_pipeline_io, hyperparameter_const
-
-RANDOM_STATE = 42
-TRAIN_RATIO_SET = "ratio_train.csv"  # "cleaned_ratio_train.csv"
-TRAIN_RAW_SET = "raw_train.csv"  # "cleaned_raw_train.csv"
-TEST_RATIO_SET = "ratio_test.csv"  # "cleaned_ratio_test.csv"
-TEST_RAW_SET = "raw_test.csv"  # "cleaned_raw_test.csv"
-TRAIN_COM_SET = "combined_train.csv"
-TEST_COM_SET = "combined_test.csv"
+from model_utils.constants import (
+    RANDOM_STATE,
+    TEST_RAW_SET,
+    TEST_RATIO_SET,
+    TEST_COM_SET,
+    TRAIN_RAW_SET,
+    TRAIN_COM_SET,
+    TRAIN_RATIO_SET,
+    FEATURE_LIST,
+)
 
 
 def train(train_set_name: list):
     train_data, target = model_pipeline_io.get_training_set(train_set_name)
-    print(train_data.index[np.isinf(train_data).any(1)])
+    train_data = train_data.loc[:, FEATURE_LIST]
+
     pipe = make_pipeline(
-        StandardScaler(),
+        QuantileTransformer(n_quantiles=10),
         RandomUnderSampler(random_state=RANDOM_STATE),
-        BalancedRandomForestClassifier(**hyperparameter_const.COMBINE_DATA),
+        RandomForestClassifier(**hyperparameter_const.COMBINE_DATA),
     )
 
     pipe.fit(train_data, target)
@@ -37,8 +40,10 @@ def train(train_set_name: list):
 
 def test(test_set_name: list, model: RandomForestClassifier):
     test_data = model_pipeline_io.get_test_set(test_set_name)
+    test_data = test_data.loc[:, FEATURE_LIST]
 
     targets = pd.DataFrame(data=model.predict(test_data))
+    targets.index = np.arange(1, len(targets) + 1)
     print(sum(model.predict(test_data)))
 
     model_pipeline_io.save_submit_file(targets, "submission.csv")
