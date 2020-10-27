@@ -6,7 +6,7 @@ from sklearn.metrics import (
     f1_score,
 )
 
-from model_utils.constants import (
+from config.constants import (
     ACCURACY,
     PRECISION,
     RECALL,

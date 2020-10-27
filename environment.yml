@@ -1,0 +1,28 @@
+name: company_default
+
+dependencies:
+  - python=3.7.1
+  - pip=20.1
+  - pip:
+    - pandas==1.0.3
+    - plotly==4.6.0
+    - scikit-learn==0.23.1
+    - matplotlib==3.2.1
+    - pandas-profiling==2.8.0
+    - imbalanced-learn==0.7.0
+    - seaborn==0.10.1
+    - shap==0.35.0
+
+      #utils
+    - pre-commit==2.3.0
+    - black==19.10b0
+    - mlflow==1.8.0
+
+      #notebook
+    - nb-black==1.0.7
+    - nbformat==5.0.6
+    - ipykernel==5.2.1
+
+      #tests
+    - pytest==5.4.1
+    - pytest-cov==2.8.1

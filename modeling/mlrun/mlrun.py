@@ -9,15 +9,13 @@ from mlflow.exceptions import MlflowException
 from plotly.graph_objs._figure import Figure
 from sklearn.pipeline import Pipeline
 from sklearn.utils import estimator_html_repr
-from plotly import express as px
 
-from model_utils.constants import (
+from config.constants import (
     LOG_CONFIG_PATH,
     X_COL,
     Y_COL,
     PIPELINE_HTML,
     SCORES_CSV,
-    FEATURE_IMPORTANCE_PLOT,
     FEATURE_IMPORTANCE_CSV,
     RUN_ID,
 )

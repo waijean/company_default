@@ -3,7 +3,3 @@ path_to_input_dir:
 
 path_to_output_dir:
   "D:/dev/Project/company_default/data/output/"
-
-hyperparameter:
-  - n_estimator:
-      20

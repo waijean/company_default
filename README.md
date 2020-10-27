@@ -1,45 +1,67 @@
-# company_default
+# Companies Bankruptcy Prediction
 
-The project's aim is to use company's financial ratios to predict whether a company will default in the next 5 months.
- 
-## Getting Started
+## Summary
+
+Our study uses **financial ratios** data of Polish companies to predict their default using machine-learning techniques. 
+
+The dataset used in this study is obtained from UCI Machine Learning Repository. The data contains 64 financial ratios 
+and corresponding class label that indicates bankruptcy status after 2 years. Of the 9792 companies analyzed in this 
+study, 515 companies (5.26%) went into bankruptcy, whereas 9277 (94.74%) firms survived.
+
+Given that the dataset only contains financial ratios, instead of raw financial figures, we attempted and successfully 
+**reverse engineered** the **raw financial figures** from financial ratios.  
+
+We find that ensemble techniques such as random forest provide the best results. Furthermore, we applied 
+*SHAP (SHapley Additive exPlanations)* technique to explain the output of the model and find that the following four 
+features are strong predictors of bankruptcy: 
+
+- Extraordinary Items
+- Sales Growth
+- Quick Ratio
+- Solvency Ratio
+
+We have also prepared some slides for those who would like to find out more about the study: 
+https://drive.google.com/file/d/1b6_aW_42r4WfGvuyQuig05dE5hu9vESm/view?usp=sharing
+
+### Data
+
+Source data: https://archive.ics.uci.edu/ml/datasets/Polish+companies+bankruptcy+data
+
+We created a data dictionary to map the given column names to common financial ratios used in accounting:
+https://drive.google.com/file/d/1_XEkCGvHlyAAPn-jbbRPPjdY78BRIham/view?usp=sharing
+
+### Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for 
-development and testing purposes. See deployment for notes on how to deploy the project on a live 
-system.
+development and testing purposes. 
 
-### Virtual environment
+#### conda environment
+To set up the conda environment, run:
 
-The Python version used is 3.7 and it is recommended to create a virtual environment and install
-the required packages:  
 ```bash
-#cd to root directory
-python -m venv venv
-
-# For Windows user
-source venv/Scripts/activate 
-
-# For Mac/Linux user
-source venv/bin/activate 
-
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate company_default
 ```
 
-### Pre-commit
+If there is any additonal packages required, add to the yml file and run:
 
-Next, pre-commit is used to run black and nbstripout before committing to Git. The 
-.pre-commit-config.yaml file is included in the repo so only the following step is required after 
-installing the pre-commit package (which is included in the requirements.txt):
+```bash
+conda env update -f environment.yml --prune
+```
+
+To create the kernel for jupyter notebooks, run:
+
+```bash
+conda activate company_default
+python -m ipykernel install --user --name company_default --display-name "Python (company_default)`
+```
+
+#### pre-commit
+
+To set up pre-commit (which is used to run black before committing to Git), run:
+
 ```bash
 pre-commit install 
-```
-
-### Jupyter notebook
-
-To use the virtual environment in notebook, you have to install ipykernel package first (which is also
-included in the requirements.txt). Then, you need to add your virtual environment to Jupyter:
-```bash
-python -m ipykernel install --user --name=venv
 ```
 
 Add the following line in the first line of your notebook to run black formatting on that notebook:
@@ -47,25 +69,30 @@ Add the following line in the first line of your notebook to run black formattin
 %load_ext nb_black
 ```
 
-### Data
+#### io
 
-Set the input and output directories in conf/parameters.yaml. The input directory contains train.csv and test.csv, 
+Set the *input* and *output* directories in **conf/parameters.yaml**. The input directory contains train.csv and test.csv, 
 while the output directory will have the pipeline output. 
 
-Each developer should have their own copy of conf/parameters.yaml so don't commit this file to Git.
+| Tables   | Description |  
+|:-------- |:----------- |
+| train.csv|  Labelled dataset used to train the model |
+| test.csv |  Unlablled dataset to make prediciton for |
 
-### mlruns
+Each developer should have their own copy of **conf/parameters.yaml** so don't commit this file to Git.
 
-To track data science experiments, construct your sklearn pipeline in modeling/cross_validate_runner.py and run it.
-This will log the params, metrics, tags, and artifacts into a specific run folder within mlruns directory. You can then
-view the results using mlflow UI.
 
-To launch the mlflow UI, run the following command and view it at http://localhost:5000
+#### mlflow (optional)
+
+*Note: While this tool will be useful to set up machine learning models in production and track data science experiments, 
+we find this tool too restrictive when running experiments to explore different modeling approaches.* 
+
+Steps to run MLflow:
+1. Construct sklearn pipeline in modeling/mlrun/cross_validate_runner.py
+2. This will log the params, metrics, tags, and artifacts into a specific run folder within mlruns directory. 
+3. To view the results using mlflow UI, run the following command and view it at http://localhost:5000
+
 ```bash
 #cd to root directory
 mlflow ui
 ```
-
-## Deployment
-
-To deploy project on a live system

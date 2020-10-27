@@ -9,7 +9,7 @@ from sklearn.model_selection import (
 )
 from sklearn.pipeline import Pipeline
 
-from model_utils.constants import LOG_CONFIG_PATH
+from config.constants import LOG_CONFIG_PATH
 
 logging.config.fileConfig(fname=LOG_CONFIG_PATH, disable_existing_loggers=False)
 logger = logging.getLogger(__name__)

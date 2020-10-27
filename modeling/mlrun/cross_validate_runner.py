@@ -2,16 +2,15 @@ from dataclasses import dataclass
 from typing import Dict, List, Any, Optional
 
 import mlflow
-from imblearn.ensemble import BalancedRandomForestClassifier, BalancedBaggingClassifier
+from imblearn.ensemble import BalancedRandomForestClassifier
 from imblearn.under_sampling import RandomUnderSampler
-from sklearn.compose import make_column_transformer, ColumnTransformer
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.pipeline import Pipeline
 from imblearn.pipeline import make_pipeline as make_pipeline_with_sampler
 from sklearn.preprocessing import OneHotEncoder
 
-from model_utils.mlrun import (
+from mlrun.mlrun import (
     set_tags,
     log_params,
     log_pipeline,
@@ -21,12 +20,11 @@ from model_utils.mlrun import (
     get_params,
 )
 from model_utils.scoring import BINARY_CLASSIFIER_SCORING
-from model_utils.constants import (
+from config.constants import (
     TRACKING_URI_PATH,
-    ARTIFACT_PATH,
     DEFAULT_CV,
 )
-from model_utils.modeling import evaluate_cv_pipeline, load_data, split_data
+from mlrun.modeling import evaluate_cv_pipeline, load_data, split_data
 from utils.constants import BANKRUPTCY_LABEL, BALANCE_SHEET, INCOME_STATEMENT
 
 
@@ -102,7 +100,7 @@ if __name__ == "__main__":
     CrossValidatePipeline(
         experiment_name="MVP",
         run_name="Balanced Random Forest",
-        read_path="D:/dev/Project/company_default/data/output/cleaned_raw_cluster_train.csv",
+        read_path="/data/output/cleaned_raw_cluster_train.csv",
         X_col=INCOME_STATEMENT + BALANCE_SHEET + ["CLUSTER_LABEL"],
         y_col=BANKRUPTCY_LABEL,
         pipeline=pipeline,

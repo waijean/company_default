@@ -3,7 +3,7 @@ import os
 import git
 from sklearn.model_selection import StratifiedKFold
 
-repo = git.Repo(".", search_parent_directories=True)
+repo = git.Repo("../utils", search_parent_directories=True)
 ROOT_DIR_PATH = repo.working_tree_dir
 
 LOG_CONFIG_PATH = os.path.join(ROOT_DIR_PATH, "conf/logging.conf")

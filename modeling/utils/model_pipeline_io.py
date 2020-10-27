@@ -2,7 +2,7 @@ import pandas as pd
 import yaml
 import os
 
-from model_utils import drop_duplicate
+from modeling.utils import drop_duplicate
 
 
 def get_para() -> dict:
