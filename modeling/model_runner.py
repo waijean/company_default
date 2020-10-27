@@ -1,16 +1,13 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import QuantileTransformer
 
 from imblearn.pipeline import make_pipeline, Pipeline
-from imblearn.under_sampling import RandomUnderSampler
 from imblearn.ensemble import BalancedRandomForestClassifier
 
 from conf.tables import TRAIN_COMBINED_SET, TEST_COMBINED_SET
 from modeling.utils import model_pipeline_io
-from config import hyperparameter_const
-
-RANDOM_STATE = 42
+from config import hyperparameter
 
 
 def train_pipeline(train_set_name: list) -> Pipeline:
@@ -21,9 +18,8 @@ def train_pipeline(train_set_name: list) -> Pipeline:
     # check that there is no infinite values in X_train
     assert all(np.isinf(X_train).sum() == 0)
     pipeline = make_pipeline(
-        StandardScaler(),
-        RandomUnderSampler(random_state=RANDOM_STATE),
-        BalancedRandomForestClassifier(**hyperparameter_const.COMBINE_DATA),
+        QuantileTransformer(),
+        BalancedRandomForestClassifier(**hyperparameter.COMBINE_DATA),
     )
     pipeline.fit(X_train, y_train)
     return pipeline

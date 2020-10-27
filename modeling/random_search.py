@@ -67,14 +67,6 @@ def run(train_set_name: list):
 
 
 if __name__ == "__main__":
-    train_set_name = [TRAIN_RAW_SET]
-    print(f"Running random search on raw dataset...")
-    run(train_set_name)
-
-    train_set_name = [TRAIN_RATIO_SET]
-    print(f"Running random search on ratio dataset...")
-    run(train_set_name)
-
     train_set_name = [TRAIN_COMBINED_SET]
-    print(f"Running random search on combined dataset...")
+    print(f"Running random search on {train_set_name} dataset...")
     run(train_set_name)

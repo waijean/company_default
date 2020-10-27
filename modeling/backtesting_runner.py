@@ -1,15 +1,12 @@
 import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler, QuantileTransformer
+from sklearn.preprocessing import QuantileTransformer
 from sklearn.model_selection import train_test_split, cross_validate
 from sklearn.metrics import (
     precision_recall_fscore_support,
-    accuracy_score,
     classification_report,
 )
 
 from imblearn.pipeline import make_pipeline
-from imblearn.under_sampling import RandomUnderSampler
 from imblearn.ensemble import BalancedRandomForestClassifier
 
 from conf.tables import TRAIN_RAW_SET, TRAIN_RATIO_SET, TRAIN_COMBINED_SET
