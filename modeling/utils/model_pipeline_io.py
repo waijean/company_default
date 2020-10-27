@@ -2,7 +2,7 @@ import pandas as pd
 import yaml
 import os
 
-from modeling.utils import drop_duplicate
+from modeling.utils.processing import remove_null_and_duplicate_rows
 
 
 def get_para() -> dict:
@@ -44,9 +44,7 @@ def get_training_set(train_set_name: list):
         [train_data, read_train_file(train_set_name[0]).iloc[:, -1]], axis=1
     )
 
-    train_data_with_target = drop_duplicate.remove_null_and_duplicate_rows(
-        train_data_with_target
-    )
+    train_data_with_target = remove_null_and_duplicate_rows(train_data_with_target)
     return train_data_with_target.iloc[:, :-1], train_data_with_target.iloc[:, -1]
 
 

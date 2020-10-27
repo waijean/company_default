@@ -19,7 +19,7 @@ from mlrun.mlrun import (
     setup_mlflow,
     get_params,
 )
-from model_utils.scoring import BINARY_CLASSIFIER_SCORING
+from modeling.mlrun.scoring import BINARY_CLASSIFIER_SCORING
 from config.constants import (
     TRACKING_URI_PATH,
     DEFAULT_CV,
