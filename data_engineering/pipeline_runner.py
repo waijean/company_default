@@ -64,7 +64,7 @@ def run(file: str):
 
     # the raw values df should have 32 features columns and 1 target column
     assert transformed_raw_df.shape[1] == 32 + 1
-    pipeline_io.save_file(transformed_raw_df, f"raw_{file}")
+    pipeline_io.save_file(transform_test(transformed_raw_df), f"raw_{file}")
 
     combined_df = create_combined_df(transformed_ratio_df, transformed_raw_df)
     combined_df = transform_test(combined_df)
