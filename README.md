@@ -82,17 +82,4 @@ while the output directory will have the pipeline output.
 Each developer should have their own copy of **conf/parameters.yaml** so don't commit this file to Git.
 
 
-#### mlflow (optional)
 
-*Note: While this tool will be useful to set up machine learning models in production and track data science experiments, 
-we find this tool too restrictive when running experiments to explore different modeling approaches.* 
-
-Steps to run MLflow:
-1. Construct sklearn pipeline in modeling/mlrun/cross_validate_runner.py
-2. This will log the params, metrics, tags, and artifacts into a specific run folder within mlruns directory. 
-3. To view the results using mlflow UI, run the following command and view it at http://localhost:5000
-
-```bash
-#cd to root directory
-mlflow ui
-```
