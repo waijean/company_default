@@ -69,17 +69,23 @@ Add the following line in the first line of your notebook to run black formattin
 %load_ext nb_black
 ```
 
-#### io
+#### input/output (io)
 
-Set the *input* and *output* directories in **conf/parameters.yaml**. The input directory contains train.csv and test.csv, 
-while the output directory will have the pipeline output. 
+To set up the io, create a data folder in the root directory, 
+which should have the following structure:
+
+- data/
+    - input/
+        - train.csv
+        - test.csv
+    - output/
+
+The input folder contains train.csv and test.csv, 
+while the output folder will have the pipeline output. 
 
 | Tables   | Description |  
 |:-------- |:----------- |
 | train.csv|  Labelled dataset used to train the model |
 | test.csv |  Unlablled dataset to make prediciton for |
-
-Each developer should have their own copy of **conf/parameters.yaml** so don't commit this file to Git.
-
 
 
