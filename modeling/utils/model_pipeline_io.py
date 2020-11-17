@@ -1,37 +1,29 @@
+import git
 import pandas as pd
-import yaml
 import os
 
 from modeling.utils.processing import remove_null_and_duplicate_rows
 
-
-def get_para() -> dict:
-    file_path = os.path.join(os.path.abspath(""), "..", "conf/parameters.yaml")
-    print(f"path to the config file: {file_path}")
-    with open(file_path) as file:
-        paras = yaml.load(file, Loader=yaml.FullLoader)
-    return paras
+repo = git.Repo(".", search_parent_directories=True)
+ROOT_DIR_PATH = repo.working_tree_dir
 
 
 def read_train_file(filename: str) -> pd.DataFrame:
-    paras = get_para()
-    filepath = os.path.join(paras["path_to_output_dir"], filename)
+    filepath = os.path.join(ROOT_DIR_PATH, "data/output", filename)
     df = pd.read_csv(filepath, index_col="company_id")
     return df
 
 
 def read_clean_train_file():
-    paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], "cleaned_ratio_train.csv")
-    print(f"Read cleaned ratio data set from: {file_path}")
+    file_path = os.path.join(ROOT_DIR_PATH, "data/output", "cleaned_ratio_train.csv")
+    print(f"Reading cleaned ratio data set from: {file_path}")
     df = pd.read_csv(file_path, index_col="company_id")
     return df
 
 
 def read_raw_values_file():
-    paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], "cleaned_raw_train.csv")
-    print(f"Read cleaned raw data set from: {file_path}")
+    file_path = os.path.join(ROOT_DIR_PATH, "data/output" "cleaned_raw_train.csv")
+    print(f"Reading cleaned raw data set from: {file_path}")
     df = pd.read_csv(file_path, index_col="company_id")
     return df
 
@@ -56,7 +48,6 @@ def get_test_set(test_set_name: list):
 
 
 def save_submit_file(df: pd.DataFrame, file_name: str):
-    paras = get_para()
-    file_path = os.path.join(paras["path_to_output_dir"], file_name)
+    file_path = os.path.join(ROOT_DIR_PATH, "data/output", file_name)
     print(f"save submit targets to: {file_path}")
     df.to_csv(file_path)

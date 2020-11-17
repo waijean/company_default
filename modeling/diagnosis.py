@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from imblearn.pipeline import make_pipeline
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.metrics import make_scorer, fbeta_score
 
 from sklearn.model_selection import learning_curve, train_test_split
@@ -10,7 +11,7 @@ from sklearn.model_selection import validation_curve
 from sklearn.preprocessing import QuantileTransformer
 
 from conf.tables import TRAIN_COMBINED_SET
-from utils import model_pipeline_io
+from modeling.utils import model_pipeline_io
 
 
 def plot_learning_curve(estimator, X, y, cv, scoring):
@@ -105,6 +106,7 @@ def run(X, y, learning_curve=False, validation_curve=False):
     )
 
     pipeline = make_pipeline(
+        SelectKBest(score_func=f_classif, k=10),
         QuantileTransformer(),
         RandomUnderSampler(random_state=RANDOM_STATE),
         GradientBoostingClassifier(random_state=RANDOM_STATE),
@@ -123,14 +125,14 @@ def run(X, y, learning_curve=False, validation_curve=False):
             y_train,
             cv=5,
             scoring=make_scorer(fbeta_score, beta=2),
-            param_name="gradientboostingclassifier__max_features",
-            param_range=[0.25, 0.5, 0.75],
+            param_name="selectkbest__k",
+            param_range=[10, 20, 30, 40, 50],
         )
         plt.show()
 
 
 if __name__ == "__main__":
     train_set_name = [TRAIN_COMBINED_SET]
-    print(f"Backtesting on {train_set_name} dataset...")
+    print(f"Running diagnosis on {train_set_name} dataset...")
     train_data, target = model_pipeline_io.get_training_set(train_set_name)
-    result = run(train_data, target, validation_curve=True)
+    run(train_data, target, validation_curve=True)

@@ -138,8 +138,5 @@ data/
 *.xlsx
 *.docx
 
-#config
-conf/parameters.yaml
-
 #mlruns
 mlruns/
