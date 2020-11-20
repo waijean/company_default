@@ -10,9 +10,6 @@ from sklearn.model_selection import learning_curve, train_test_split
 from sklearn.model_selection import validation_curve
 from sklearn.preprocessing import QuantileTransformer
 
-from conf.tables import TRAIN_COMBINED_SET
-from modeling.utils import model_pipeline_io
-
 
 def plot_learning_curve(estimator, X, y, cv, scoring):
     train_sizes, train_scores, test_scores = learning_curve(
@@ -129,10 +126,3 @@ def run(X, y, learning_curve=False, validation_curve=False):
             param_range=[10, 20, 30, 40, 50],
         )
         plt.show()
-
-
-if __name__ == "__main__":
-    train_set_name = [TRAIN_COMBINED_SET]
-    print(f"Running diagnosis on {train_set_name} dataset...")
-    train_data, target = model_pipeline_io.get_training_set(train_set_name)
-    run(train_data, target, validation_curve=True)
