@@ -20,7 +20,7 @@ def plot_learning_curve(estimator, X, y, cv, scoring):
     test_scores_mean = np.mean(test_scores, axis=1)
     test_scores_std = np.std(test_scores, axis=1)
 
-    f, ax = plt.subplots(figsize=(10, 10))
+    f, ax = plt.subplots(figsize=(5, 5))
     ax.set_title("Learning Curve")
     ax.set_xlabel("Training examples")
     ax.set_ylabel("Score")
@@ -49,14 +49,20 @@ def plot_validation_curve(
     estimator, X, y, cv, scoring, param_name, param_range, log_scale=False
 ):
     train_scores, test_scores = validation_curve(
-        estimator, X, y, param_name, param_range, cv=cv, scoring=scoring
+        estimator,
+        X,
+        y,
+        param_name=param_name,
+        param_range=param_range,
+        cv=cv,
+        scoring=scoring,
     )
     train_mean = np.mean(train_scores, axis=1)
     train_std = np.std(train_scores, axis=1)
     test_mean = np.mean(test_scores, axis=1)
     test_std = np.std(test_scores, axis=1)
 
-    f, ax = plt.subplots(figsize=(10, 10))
+    f, ax = plt.subplots(figsize=(5, 5))
     ax.set_title("Validation Curve")
     ax.set_xlabel(param_name)
     ax.set_ylabel("Score")
