@@ -12,25 +12,20 @@ Given that the dataset only contains financial ratios, instead of raw financial 
 **reverse engineered** the **raw financial figures** from financial ratios.  
 
 We find that ensemble techniques such as random forest provide the best results. Furthermore, we applied 
-*SHAP (SHapley Additive exPlanations)* technique to explain the output of the model and find that the following four 
-features are strong predictors of bankruptcy: 
+*SHAP (SHapley Additive exPlanations)* technique to explain the output of the model.
 
-- Extraordinary Items
-- Sales Growth
-- Quick Ratio
-- Solvency Ratio
+The best way to step through our work is to view the 
+[notebooks](https://github.com/waijean/company_default/tree/master/notebooks). 
 
-We have also prepared some slides for those who would like to find out more about the study: 
-https://drive.google.com/file/d/1b6_aW_42r4WfGvuyQuig05dE5hu9vESm/view?usp=sharing
+## Data
 
-### Data
+The source data is obtained from 
+[UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Polish+companies+bankruptcy+data)
 
-Source data: https://archive.ics.uci.edu/ml/datasets/Polish+companies+bankruptcy+data
+We created a [data dictionary](https://drive.google.com/file/d/1_XEkCGvHlyAAPn-jbbRPPjdY78BRIham/view?usp=sharing) 
+to map the given column names to financial ratios:
 
-We created a data dictionary to map the given column names to common financial ratios used in accounting:
-https://drive.google.com/file/d/1_XEkCGvHlyAAPn-jbbRPPjdY78BRIham/view?usp=sharing
-
-### Getting Started
+## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for 
 development and testing purposes. 
