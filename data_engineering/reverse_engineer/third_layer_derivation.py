@@ -55,6 +55,7 @@ def derive_features_from_equity(df):
         **{
             "FIXED_ASSETS": calculate_fixed_assets(df),
             "SHARE_CAPITAL": calculate_share_capital(df),
+            "LONG_TERM_LIABILITIES": calculate_long_term_liabilities(df),
         }
     )
 
@@ -92,3 +93,7 @@ def calculate_share_capital(df: pd.DataFrame) -> pd.Series:
         df["TOTAL_ASSETS"] * df["(equity - share capital) / total assets"]
         - df["EQUITY"]
     )
+
+
+def calculate_long_term_liabilities(df: pd.DataFrame) -> pd.Series:
+    return df["EQUITY"] * df["long-term liabilities / equity"]
