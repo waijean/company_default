@@ -7,6 +7,7 @@ from utils.preprocessing import (
     get_raw_values,
     fill_null_with_zeros,
     clip_extreme_value,
+    fill_null_with_max,
 )
 
 
@@ -18,9 +19,13 @@ def clean_train(df: pd.DataFrame) -> pd.DataFrame:
     COLS_TO_CLIP = list(df.columns)
     return (
         df.pipe(remove_duplicates)
-        .pipe(remove_companies_with_many_null_values, thres=55)
+        .pipe(
+            fill_null_with_max,
+            col="(current assets - inventories) / long-term liabilities",
+        )
+        .pipe(remove_companies_with_many_null_values, thres=10)
         .pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS)
-        .pipe(clip_extreme_value, columns=COLS_TO_CLIP)
+        # .pipe(clip_extreme_value, columns=COLS_TO_CLIP)
     )
 
 
@@ -33,8 +38,13 @@ def clean_test(df: pd.DataFrame) -> pd.DataFrame:
     """
     COLS_IMPUTE_ZEROS = list(df.columns)
     COLS_TO_CLIP = list(df.columns)
-    return df.pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS).pipe(
-        clip_extreme_value, columns=COLS_TO_CLIP
+    return (
+        df.pipe(
+            fill_null_with_max,
+            col="(current assets - inventories) / long-term liabilities",
+        )
+        .pipe(fill_null_with_zeros, columns=COLS_IMPUTE_ZEROS)
+        .pipe(clip_extreme_value, columns=COLS_TO_CLIP)
     )
 
 

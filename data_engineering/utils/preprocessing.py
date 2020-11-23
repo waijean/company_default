@@ -37,9 +37,14 @@ def remove_companies_with_many_null_values(
 
 
 def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:
-    # todo: need to try different combination of cols to find other possible duplicates
     cols = list(df.columns)
     return df.drop_duplicates(cols)
+
+
+def fill_null_with_max(df: pd.DataFrame, col: str) -> pd.DataFrame:
+    df = df.copy()
+    df[col].fillna(df[col].max(), inplace=True)
+    return df
 
 
 def get_raw_values(ratio_df: pd.DataFrame) -> pd.DataFrame:
@@ -65,8 +70,8 @@ def get_raw_values(ratio_df: pd.DataFrame) -> pd.DataFrame:
 
     raw_df = raw_df.drop(ratio_df.columns, axis=1)
 
-    # the raw values df should have 32 features columns and 1 target column
-    assert raw_df.shape[1] == 32 + 1
+    # the raw values df should have 33 features columns and 1 target column
+    assert raw_df.shape[1] == 33 + 1
 
     return raw_df
 
